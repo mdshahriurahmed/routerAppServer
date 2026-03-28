@@ -1,28 +1,24 @@
 const express = require('express')
 var cors = require('cors')
-require('dotenv').config()
+// require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // jwt = require('jsonwebtoken');
 // const cookieParser = require('cookie-parser');
 const app = express()
-
+const { request } = require('express');
 const port = process.env.PORT || 5000
 
 // midleware
 app.use(cors())
-
 app.use(express.json())
-// app.use(cookieParser())
 
-// uname: 
-// pass:
 
 
 
 const uri = `mongodb+srv://shahriurahmedcse_db_user:cyEljaq6SYPC7qvZ@cluster0.tvjrc2r.mongodb.net/?appName=Cluster0`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
