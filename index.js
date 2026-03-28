@@ -51,8 +51,8 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         client.connect();
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
         const postsColl = client.db("postApp").collection("posts");
 
@@ -110,7 +110,7 @@ async function run() {
 
         })
 
-        app.get('/ourpost', verifyToken, async (req, res) => {
+        app.get('/ourpost', async (req, res) => {
             const p = await postsColl.find().toArray()
             console.log('cookies', req.cookies);
             res.send(p)
