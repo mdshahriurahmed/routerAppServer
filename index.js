@@ -10,13 +10,10 @@ const app = express()
 const port = process.env.PORT || 5000
 
 // midleware
-app.use(cors({
-    origin: ['http://localhost:5173'],
-    credentials: true
-}))
+app.use(cors())
 
 app.use(express.json())
-app.use(cookieParser())
+// app.use(cookieParser())
 
 // uname: 
 // pass:
@@ -34,41 +31,34 @@ const client = new MongoClient(uri, {
     }
 });
 
-const verifyToken = (req, res, next) => {
-    console.log("inside verify", req.cookies);
-    const token = req.cookies.token
-    if (!token) { return res.status(401).send({ message: 'unauthorized access' }) }
-    jwt.verify(token, '9ec6823a06e87c439a79581dafbb3588c2f1305ba5badc9b6b57b22c2a76c96454a478cddfb5c04bf7f1602e4148c4763ea186359e394418b865b51c0b35c8d4', (err, decoded) => {
-        if (err) { return res.status(401).send({ message: 'unauthorized access' }) }
-        next();
-    })
-}
+// const verifyToken = (req, res, next) => {
+//     console.log("inside verify", req.cookies);
+//     const token = req.cookies.token
+//     if (!token) { return res.status(401).send({ message: 'unauthorized access' }) }
+//     jwt.verify(token, '9ec6823a06e87c439a79581dafbb3588c2f1305ba5badc9b6b57b22c2a76c96454a478cddfb5c04bf7f1602e4148c4763ea186359e394418b865b51c0b35c8d4', (err, decoded) => {
+//         if (err) { return res.status(401).send({ message: 'unauthorized access' }) }
+//         next();
+//     })
+// }
 
 
 
 async function run() {
     try {
-        // Connect the client to the server	(optional starting in v4.7)
-        client.connect();
-        // Send a ping to confirm a successful connection
-        // await client.db("admin").command({ ping: 1 });
-        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
+        client.connect();
         const postsColl = client.db("postApp").collection("posts");
 
-
-
-
-        app.post('/jwt', async (req, res) => {
-            const user = req.body
-            const token = jwt.sign(user, process.env.SECRET_KEY, { expiresIn: '1h' })
-            res.cookie('token', token, {
-                httpOnly: true,
-                secure: false, //false for developer mode and true for production 
-                sameSite: 'lax'
-            })
-            res.send({ success: true })
-        })
+        // app.post('/jwt', async (req, res) => {
+        //     const user = req.body
+        //     const token = jwt.sign(user, process.env.SECRET_KEY, { expiresIn: '1h' })
+        //     res.cookie('token', token, {
+        //         httpOnly: true,
+        //         secure: false, //false for developer mode and true for production 
+        //         sameSite: 'lax'
+        //     })
+        //     res.send({ success: true })
+        // })
 
 
         app.get('/ourpost/:_id', async (req, res) => {
@@ -87,11 +77,11 @@ async function run() {
         })
 
         app.post('/logout', (req, res) => {
-            res.clearCookie('token', {
-                httpOnly: true,
-                secure: false,   // production হলে true
-                sameSite: 'lax'
-            })
+            // res.clearCookie('token', {
+            //     httpOnly: true,
+            //     secure: false,   // production হলে true
+            //     sameSite: 'lax'
+            // })
             res.send({ success: true })
         })
 
@@ -112,11 +102,10 @@ async function run() {
 
         app.get('/ourpost', async (req, res) => {
             const p = await postsColl.find().toArray()
-            console.log('cookies', req.cookies);
             res.send(p)
         })
 
-        app.post('/addpost', verifyToken, async (req, res) => {
+        app.post('/addpost', async (req, res) => {
             const post = req.body;
             console.log(post);
 
