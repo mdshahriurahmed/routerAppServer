@@ -2,11 +2,11 @@ const express = require('express')
 var cors = require('cors')
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const bodyParser = require('body-parser')
+
 jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const app = express()
-const posts = require('./data.json')
+
 const port = process.env.PORT || 5000
 
 // midleware
@@ -138,4 +138,6 @@ app.get('/', (req, res) => {
 
 
 
-module.exports = app;
+app.listen(port, () => {
+    console.log(` app running on port ${port}`)
+})
