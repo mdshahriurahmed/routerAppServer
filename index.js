@@ -46,7 +46,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
 
-        client.connect();
+        await client.connect();
         const postsColl = client.db("postApp").collection("posts");
 
         // app.post('/jwt', async (req, res) => {
