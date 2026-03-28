@@ -19,13 +19,7 @@ app.use(express.json())
 const uri = `mongodb+srv://shahriurahmedcse_db_user:cyEljaq6SYPC7qvZ@cluster0.tvjrc2r.mongodb.net/?appName=Cluster0`;
 
 
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
+const client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
 
 // const verifyToken = (req, res, next) => {
 //     console.log("inside verify", req.cookies);
