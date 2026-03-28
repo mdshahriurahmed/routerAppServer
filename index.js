@@ -3,8 +3,8 @@ var cors = require('cors')
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
-jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
+// jwt = require('jsonwebtoken');
+// const cookieParser = require('cookie-parser');
 const app = express()
 
 const port = process.env.PORT || 5000
@@ -69,7 +69,7 @@ async function run() {
         })
         app.delete('/deletepost/:_id', async (req, res) => {
             const _id = req.params._id;
-            console.log("id is:", _id);
+
 
             const post = { _id: new ObjectId(_id) };
             const result = await postsColl.deleteOne(post);
@@ -87,7 +87,7 @@ async function run() {
 
         app.put('/post/:_id', async (req, res) => {
             const _id = req.params._id;
-            console.log(_id);
+
             const post = { _id: new ObjectId(_id) };
             const newTitle = req.body;
 
